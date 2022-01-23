@@ -1,15 +1,22 @@
-﻿using AspNetCoreHero.EntityFrameworkCore.AuditTrail.Models;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AspNetCoreHero.EntityFrameworkCore.AuditTrail.Models;
+using Microsoft.EntityFrameworkCore;
 
-namespace AspNetCoreHero.EntityFrameworkCore.AuditTrail
+namespace AspNetCoreHero.EntityFrameworkCore.AuditTrail.Contexts
 {
     public abstract class AuditableContext : DbContext
     {
         public AuditableContext(DbContextOptions options) : base(options)
         {
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Audit>().Property(x => x.Id).HasDefaultValueSql("NEWID()");
+            
         }
 
         public DbSet<Audit> AuditLogs { get; set; }
