@@ -15,8 +15,10 @@ namespace AspNetCoreHero.EntityFrameworkCore.AuditTrail.Contexts
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<Audit>().Property(x => x.Id).HasDefaultValueSql("NEWID()");
-            
+            //  modelBuilder.Entity<Audit>().Property(x => x.Id).HasDefaultValueSql("NEWID()");
+
+            //  modelBuilder.Entity<Audit>().Property(x => x.Id).HasDefaultValueSql("NEWID()");
+
         }
 
         public DbSet<Audit> AuditLogs { get; set; }
