@@ -15,9 +15,17 @@ namespace AspNetCoreHero.EntityFrameworkCore.AuditTrail.Contexts
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            //  modelBuilder.Entity<Audit>().Property(x => x.Id).HasDefaultValueSql("NEWID()");
+            var guidFunctionGenerator = "NEWID()";
+            /*https://stackoverflow.com/questions/40621262/determine-at-runtime-which-db-provider-is-being-used-with-ef-core*/
+            // Boolean isPostgreSQL = this.Database.IsNpgsql();
+            // Boolean isSqlServer  = this.Database.IsSqlServer();
+            var prov = this.Database.ProviderName;
+            if (prov == "Npgsql.EntityFrameworkCore.PostgreSQL")
+            {
+                guidFunctionGenerator = "uuid_generate_v4()";
+            }
 
-            //  modelBuilder.Entity<Audit>().Property(x => x.Id).HasDefaultValueSql("NEWID()");
+            modelBuilder.Entity<Audit>().Property(x => x.Id).HasDefaultValueSql(guidFunctionGenerator);
 
         }
 
